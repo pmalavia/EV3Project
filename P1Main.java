@@ -40,7 +40,6 @@ public class P1Main {
 		float[] clrSample = new float[clrMode.sampleSize()];
 		// Color sensor
 		
-		clrMode.fetchSample(clrSample,0); // Fetches color mode (Numbers 1 through 7 correspond to a certain color).
 		touchRed.fetchSample(sampleRed,0); // Fetches touch mode (1 is pressed, 0 is not pressed).
 		
 		do {
@@ -52,7 +51,7 @@ public class P1Main {
 				touchYellow.fetchSample(sampleYellow,0);
 				r1.forward();
 				
-				clrMode.fetchSample(clrSample,0); // Fetches color mode only while yellow touch sensor is pressed.
+				clrMode.fetchSample(clrSample,0); // Fetches color mode (Numbers 1 through 7 correspond to a certain color).
 				if (clrSample[0] == 0)
 					System.out.println("Red");
 				else if (clrSample[0] == 1)
