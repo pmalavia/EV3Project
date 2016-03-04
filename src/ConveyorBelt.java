@@ -10,6 +10,7 @@
  * Spring 2016
  */
 
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.port.MotorPort;
@@ -19,6 +20,40 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.*;
 
 public class ConveyorBelt {
+	
+	/*Function to rotate the first sorting arm*/
+	public static void rotateArm1(){
+		//initialize the motor
+		EV3LargeRegulatedMotor r2 = new EV3LargeRegulatedMotor(MotorPort.B);
+		r2.resetTachoCount();
+		//Delay to allow time for the brick to reach the arm
+		Delay.msDelay(500);
+		//rotate the arm forward
+		r2.rotate(60);
+		Delay.msDelay(500);
+		//rotate the arm back
+		r2.rotate(-58);
+		r2.rotate(-5); //minor adjustment to get the arm to original position
+		r2.close();
+		return;
+	}
+	
+	/*Function to rotate the second sorting arm*/
+	public static void rotateArm2(){
+		//initialize the motor
+		EV3LargeRegulatedMotor r3 = new EV3LargeRegulatedMotor(MotorPort.C);
+		r3.resetTachoCount();
+		//Delay to allow time for the brick to reach the arm
+		Delay.msDelay(1025);
+		//rotate the arm forward
+		r3.rotate(60);
+		Delay.msDelay(500);
+		//rotate the arm back
+		r3.rotate(-58);
+		r3.rotate(-5); //minor adjustment to get the arm to original position
+		r3.close();
+		return;
+	}
 	
 	public static void main(String[] args) {
 		
@@ -57,10 +92,12 @@ public class ConveyorBelt {
 					//drawString(java.lang.String "Red", int 5, int 5)
 					System.out.println("Red");
 					redCount++;
+					rotateArm1();
 				}
 				else if (clrSample[0] == 1){
 					System.out.println("Green");
 					greenCount++;
+					rotateArm2();
 				}
 				else if (clrSample[0] == 2){
 					System.out.println("Blue");
