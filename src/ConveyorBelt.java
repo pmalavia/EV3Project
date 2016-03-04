@@ -22,7 +22,7 @@ import lejos.hardware.sensor.*;
 public class ConveyorBelt {
 	
 	/*Function to rotate the first sorting arm*/
-	public static void rotateArm1(){
+/*	public static void rotateArm1(){
 		//initialize the motor
 		EV3LargeRegulatedMotor r2 = new EV3LargeRegulatedMotor(MotorPort.B);
 		r2.resetTachoCount();
@@ -39,7 +39,7 @@ public class ConveyorBelt {
 	}
 	
 	/*Function to rotate the second sorting arm*/
-	public static void rotateArm2(){
+/*	public static void rotateArm2(){
 		//initialize the motor
 		EV3LargeRegulatedMotor r3 = new EV3LargeRegulatedMotor(MotorPort.C);
 		r3.resetTachoCount();
@@ -54,11 +54,12 @@ public class ConveyorBelt {
 		r3.close();
 		return;
 	}
-	
+	*/
 	public static void main(String[] args) {
 		
 		int redCount = 0, greenCount = 0, yellowCount = 0, blueCount = 0;
 		
+		//initialize the motor
 		EV3MediumRegulatedMotor r1 = new EV3MediumRegulatedMotor(MotorPort.A);
 		
 		EV3TouchSensor sensorRed = new EV3TouchSensor(SensorPort.S2);
@@ -92,12 +93,17 @@ public class ConveyorBelt {
 					//drawString(java.lang.String "Red", int 5, int 5)
 					System.out.println("Red");
 					redCount++;
-					rotateArm1();
+					//Initialize thread each time 
+					RotateArm1 thread1 = new RotateArm1();
+					thread1.start();
+					//rotateArm1();
 				}
 				else if (clrSample[0] == 1){
 					System.out.println("Green");
 					greenCount++;
-					rotateArm2();
+					RotateArm2 thread2 = new RotateArm2();
+					thread2.start();
+					//rotateArm2();
 				}
 				else if (clrSample[0] == 2){
 					System.out.println("Blue");
@@ -121,4 +127,40 @@ public class ConveyorBelt {
 		clrSensor.close();
 	}
 
+}
+
+class RotateArm1 extends Thread {
+	public void run() {
+		//initialize the motor
+		EV3LargeRegulatedMotor r2 = new EV3LargeRegulatedMotor(MotorPort.B);
+		r2.resetTachoCount();
+		//Delay to allow time for the brick to reach the arm
+		Delay.msDelay(500);
+		//rotate the arm forward
+		r2.rotate(60);
+		Delay.msDelay(500);
+		//rotate the arm back
+		r2.rotate(-58);
+		r2.rotate(-5); //minor adjustment to get the arm to original position
+		r2.close();
+		return;
+	}
+}
+
+class RotateArm2 extends Thread {
+	public void run() {
+		//initialize the motor
+		EV3LargeRegulatedMotor r3 = new EV3LargeRegulatedMotor(MotorPort.C);
+		r3.resetTachoCount();
+		//Delay to allow time for the brick to reach the arm
+		Delay.msDelay(1025);
+		//rotate the arm forward
+		r3.rotate(60);
+		Delay.msDelay(500);
+		//rotate the arm back
+		r3.rotate(-58);
+		r3.rotate(-5); //minor adjustment to get the arm to original position
+		r3.close();
+		return;
+	}
 }
